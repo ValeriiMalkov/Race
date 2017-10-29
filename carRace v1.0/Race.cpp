@@ -1,37 +1,58 @@
 #include "Race.h"
-Race::Race():status(true)
+Race::Race():status_(true)
 {
-	asphalt = new Road(new OneLineRoad(new Map));
-	barrier = new Barrier(*asphalt);
-	car.boardOn();
+	asphalt_ = new Road(new OneLineRoad(new Map));
+	barrier_ = new Barrier(*asphalt_);
+	car_.boardOn();
+}
+Race::Race(const Race& race)
+{
+	this->asphalt_ = race.asphalt_;
+	this->barrier_ = race.barrier_;
+	this->car_ = race.car_;
+	this->status_ = race.status_;
+}
+Race& Race::operator=(const Race& race)
+{
+	if (this != &race)
+	{
+		this->asphalt_ = race.asphalt_;
+		this->barrier_ = race.barrier_;
+		this->car_ = race.car_;
+		this->status_ = race.status_;
+		return *this;
+	}
+	else return *this;
 }
 Race::~Race()
 {
-	delete asphalt;
-	delete barrier;
-	car.~Auto();
+	delete asphalt_;
+	delete barrier_;
+	car_.~Auto();
 }
 void Race::Start()
 {
-	while (status)
+	while (status_)
 	{
-		car.goToRoad(*asphalt);
-		barrier->goToRoad();
-		asphalt->viewer();
-		car.boardViewer();
-		car.carControler(*asphalt);
-		if (asphalt->getMap()[car.getY()][car.getX()] == barrier->getObject() || asphalt->getMap()[car.getY()][car.getX()+1] == barrier->getObject() || asphalt->getMap()[car.getY()][car.getX() + 2] == barrier->getObject())
+		car_.goToRoad(*asphalt_);
+		barrier_->goToRoad();
+		asphalt_->viewer();
+		car_.boardViewer();
+		car_.carControler(*asphalt_);
+	if (asphalt_->getMap()[car_.getY()][car_.getX()] == barrier_->getObject()|| 
+	asphalt_->getMap()[car_.getY()][car_.getX()+1] == barrier_->getObject() ||
+	asphalt_->getMap()[car_.getY()][car_.getX() + 2] == barrier_->getObject())
 		{
-			status = false;
+			status_ = false;
 		}
-		if (!barrier->newPosition())
+		if (!barrier_->newPosition())
 		{
-			barrier->~Barrier();
-			asphalt = new Road(new TwoLineRoad(new Map));
-			barrier = new Barrier(*asphalt);
+			barrier_->~Barrier();
+			asphalt_ = new Road(new TwoLineRoad(new Map));
+			barrier_ = new Barrier(*asphalt_);
 		}
 		
-		Sleep(1 / static_cast<double>(car.getSpeed()) * 1000);
+		Sleep(1 / static_cast<double>(car_.getSpeed()) * 1000);
 		system("cls");
 	}
 	gameOver();

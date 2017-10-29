@@ -1,121 +1,171 @@
-#ifndef AUTO_H
-#define AUTO_H
 #include <Windows.h>
 #include<ctime>
 #include<vector>
 #include"Map.h"
+#ifndef AUTO_H
+#define AUTO_H
+
 class Control;
 class Dashboard;
 class Auto
 {
 private:
-	int X;
-	int Y;
-	int size;
-	char ** car;
-	int speed;
-	int maxSpeed;
-	Control * control;
-	Dashboard * board;
+	int X_;
+	int Y_;
+	int size_;
+	char ** car_;
+	int speed_;
+	int maxSpeed_;
+	Control * control_;
+	Dashboard * board_;
 public:
 	Auto();
 	~Auto();
-	void goToRoad(Asphalt & asphalt);
+	Auto& operator=(const Auto& car);
+	Auto(const Auto & car);
+	void goToRoad(const Asphalt & asphalt);
+	int getX()const;
+	int getY()const;
 	int getX();
 	int getY();
+	int getSpeed()const;
 	int getSpeed();
-	void changeX(int _X);
-	void changeY(int _Y);
-	void changeSpeed(int _speed);
-	void carControler(Asphalt & asphalt);
+	void changeX(int X);
+	void changeY(int Y);
+	void changeSpeed(int speed);
+	void carControler(const Asphalt & asphalt);
 	void view();
 	void boardViewer();
 	void boardOn();
 private:
 	void carInitializer();
 	void carCleaner();
-	void newState(Asphalt & asphalt);
+	void newState(const Asphalt & asphalt);
 
 };
 class Control
 {
 protected:
-	int stateChanger;
-	int speedChanger;
+	int stateChanger_;
+	int speedChanger_;
 public:
 	Control();
+	virtual ~Control();
 	virtual void changeState(Auto & car) = 0;
+private:
+	void operator=(const Control& control);
+	Control(const Control& control);
 };
 class Left : public Control
 {
 public:
 	Left();
-	void changeState(Auto & car);
+	
+	~Left();
+	void changeState( Auto & car);
+private:
+	Left(const Control & left);
+	void operator=(const Control& control);
 };
 class Right : public Control
 {
 public:
 	Right();
-	void changeState(Auto & car);
+	~Right();
+	void changeState( Auto & car);
+private:
+	Right(const Control & right);
+	void operator=(const Control& control);
 };
 class Up : public Control
 {
 public:
 	Up();
-	void changeState(Auto & car);
+	~Up();
+	void changeState( Auto & car);
+private:
+	Up(const Control & up);
+	void operator=(const Control& control);
 };
 class Down : public Control
 {
 public:
 	Down();
+	
+	~Down();
 	void changeState(Auto & car);
+private:
+	Down(const Control & down);
+	void operator=(const Control& control);
 };
 class Sensor
 {
+protected:
+	const Auto* car_;
 public:
-	Auto* car;
-public:
-	Sensor() {};
-	Sensor(Auto & _car);
+	Sensor();
+	Sensor(Auto & car);
+	virtual ~Sensor();
 	virtual void applyParameter() = 0;
 	virtual void viewParameter() = 0;
+private:
+	Sensor(const Sensor& sensor);
+	void operator=(const Sensor& sensor);
 
 };
 class SpeedSensor :public Sensor
 {
 private:
-	int speed;
+	int speed_;
 public:
-	SpeedSensor(Auto & _car);
+	SpeedSensor(Auto & car);
+	SpeedSensor(const SpeedSensor & speedSensor);
+	~SpeedSensor();
+	SpeedSensor& operator=(const SpeedSensor& speedSensor);
 	void applyParameter();
 	void viewParameter();
+private:
+	SpeedSensor();
 };
 class Dashboard : public Sensor
 {
 private:
-	vector<Sensor*> sensor;
+	vector<Sensor*> sensor_;
 public:
 	Dashboard();
-	Dashboard(Auto & _car);
+	Dashboard(Auto & car);
+	Dashboard(const Dashboard & dashboard);
+	~Dashboard();
+	Dashboard& operator=(const Dashboard & dashboard);
 	void applyParameter();
 	void viewParameter();
 };
 class DistanceSensor :public Sensor
 {
 private:
-	double distance;
+	double distance_;
 public:
-	DistanceSensor(Auto & _car);
+	DistanceSensor(Auto & car);
+	DistanceSensor(const DistanceSensor & distanceSensor);
+	~DistanceSensor();
+	DistanceSensor& operator=(const DistanceSensor& distanceSensor);
 	void applyParameter();
 	void viewParameter();
+private:
+	DistanceSensor();
 };
 class TimeSensor : public Sensor
 {
 private:
-	double time;
+	double time_;
 public:
-	TimeSensor(Auto & _car);
+	TimeSensor(Auto & car);
+	TimeSensor(const TimeSensor & timeSensor);
+	~TimeSensor();
+	TimeSensor& operator=(const TimeSensor& timeSensor);
 	void applyParameter();
 	void viewParameter();
+private:
+	TimeSensor();
 };
 #endif;

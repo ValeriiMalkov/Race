@@ -1,21 +1,27 @@
 #include "Map.h"
-Asphalt::Asphalt():size(27) {}
+Asphalt::Asphalt():size_(27) {}
+Asphalt::Asphalt(const Asphalt& asphalt) {}
+void Asphalt::operator=(const Asphalt& asphalt) {}
 Asphalt::~Asphalt()
 {
-	cout << "~Asphalt";
+	for (int i = 0;i < size_;i++)
+		delete[] map_[i];
 }
 char** Asphalt::getMap()
 {
-	return map;
+	return map_;
 }
-int Asphalt::getSize()
+int Asphalt::getSize() const
 {
-	return size;
+	return size_;
 }
 Map::Map() : Asphalt()
 {
 	add();
 }
+Map::~Map() {}
+Map::Map(const Asphalt& map) {}
+void Map::operator=(const Map& map) {}
 void Map::add()
 {
 	mapInitializer();
@@ -26,9 +32,9 @@ void Map::mapInitializer()
 	{
 		try
 		{
-			map = new char*[size];
-			for (int i = 0;i < size;i++)
-				map[i] = new char[size];
+			map_ = new char*[size_];
+			for (int i = 0;i < size_;i++)
+				map_[i] = new char[size_];
 			return;
 		}
 		catch (bad_alloc) 
@@ -36,51 +42,57 @@ void Map::mapInitializer()
 		}
 	}
 }
-void Map::setObject(int X, int Y, char ** obj, int sizeObj)
+void Map::setObject(int X, int Y, char ** obj, int sizeObj)const
 {
 	for (int i = 0; i < sizeObj; i++)
 	{
 		for (int j = 0; j < sizeObj; j++)
 		{
-			map[Y + i][X + j] = obj[i][j];
+			map_[Y + i][X + j] = obj[i][j];
 		}
 	}
 }
-Road::Road(Asphalt* _asphalt)
+Road::Road(Asphalt* asphalt)
 {
-	asphalt = _asphalt;
-	map = asphalt->getMap();
+	asphalt_ = asphalt;
+	map_ = asphalt_->getMap();
 }
+Road::Road() {}
+Road::Road(const Road& road) {}
+void Road::operator=(const Road& road) {}
+Road::~Road() {}
 void Road::add()
 {
-	asphalt->add();
+	asphalt_->add();
 }
 void Road::viewer()
 {
-	asphalt->viewer();
+	asphalt_->viewer();
 }
-void Road::setObject(int X, int Y, char ** obj, int sizeObj)
+void Road::setObject(int X, int Y, char ** obj, int sizeObj)const
 {
 	for (int i = 0; i < sizeObj; i++)
 	{
 		for (int j = 0; j < sizeObj; j++)
 		{
-			map[Y + i][X + j] = obj[i][j];
+			map_[Y + i][X + j] = obj[i][j];
 		}
 	}
-	asphalt->setObject(X, Y, obj, sizeObj);
+	asphalt_->setObject(X, Y, obj, sizeObj);
 }
-OneLineRoad::OneLineRoad(Asphalt* _asphalt) :Road(_asphalt) { add(); }
+OneLineRoad::OneLineRoad(Asphalt* asphalt) :Road(asphalt) { add(); }
+void OneLineRoad::operator=(const OneLineRoad& one) {}
+OneLineRoad::~OneLineRoad() {}
 void OneLineRoad::add()
 {
-	for (int i = 0; i < size; i++) 
+	for (int i = 0; i < size_; i++)
 	{
-		for (int j = 0; j < size; j++) 
+		for (int j = 0; j < size_; j++)
 			{
-				map[i][0] = '|';
+				map_[i][0] = '|';
 				
-				map[i][size-2] = '|';
-				map[i][j] = ' ';
+				map_[i][size_ -2] = '|';
+				map_[i][j] = ' ';
 			}
 		}
 }
@@ -88,15 +100,17 @@ void OneLineRoad::viewer()
 {
 	Road::viewer();
 }
-TwoLineRoad::TwoLineRoad(Asphalt* _asphalt) : Road(_asphalt) { add(); }
+TwoLineRoad::TwoLineRoad(Asphalt* asphalt) : Road(asphalt) { add(); }
+void TwoLineRoad::operator=(const TwoLineRoad& two) {}
+TwoLineRoad::~TwoLineRoad() {}
 void TwoLineRoad::add()
 {
-	for (int i = 0; i < size; ++i) {
-		for (int j = 0; j < size; ++j) {
-			map[i][0] = '|';
-			map[i][size-2] = '|';
-			map[i][(size-2)/2] = '|';
-			map[i][j] = ' ';
+	for (int i = 0; i < size_; ++i) {
+		for (int j = 0; j < size_; ++j) {
+			map_[i][0] = '|';
+			map_[i][size_ -2] = '|';
+			map_[i][(size_ -2)/2] = '|';
+			map_[i][j] = ' ';
 		}
 	}
 }
@@ -106,11 +120,11 @@ void TwoLineRoad::viewer()
 }
 void Map::viewer()
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size_; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size_; j++)
 		{
-			cout << map[i][j];
+			cout << map_[i][j];
 		}
 		cout << '\n';
 	}
