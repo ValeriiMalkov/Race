@@ -1,4 +1,4 @@
-#include"Composite\Dashboard.h"
+#include"Dashboard.h"
 Dashboard::Dashboard()
 {
 	sensor_.push_back(new SpeedSensor());

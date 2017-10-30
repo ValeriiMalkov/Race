@@ -1,4 +1,4 @@
-#include"Composite\Sensor.h"
+#include"Sensor.h"
 Sensor::Sensor() {}
 //Sensor::Sensor( Auto & car)
 //{

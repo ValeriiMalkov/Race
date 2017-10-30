@@ -1,4 +1,4 @@
-#include"Strategy\Control.h"
+#include"Control.h"
 Control::Control() :stateChanger_(3), speedChanger_(10) {}
 Control::Control(const Control& control)
 {

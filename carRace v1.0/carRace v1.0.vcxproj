@@ -118,20 +118,45 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Asphalt.cpp" />
     <ClCompile Include="Auto.cpp" />
     <ClCompile Include="Barrier.cpp" />
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="Dashboard.cpp" />
+    <ClCompile Include="DistanceSensor.cpp" />
+    <ClCompile Include="Down.cpp" />
+    <ClCompile Include="Left.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="OneLineRoad.cpp" />
     <ClCompile Include="Race.cpp" />
+    <ClCompile Include="Right.cpp" />
+    <ClCompile Include="Road.cpp" />
     <ClCompile Include="Sensor.cpp" />
+    <ClCompile Include="SpeedSensor.cpp" />
+    <ClCompile Include="TimeSensor.cpp" />
+    <ClCompile Include="TwoLineRoad.cpp" />
+    <ClCompile Include="Up.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Asphalt.h" />
     <ClInclude Include="Auto.h" />
     <ClInclude Include="Barrier.h" />
+    <ClInclude Include="Control.h" />
+    <ClInclude Include="Dashboard.h" />
+    <ClInclude Include="DistanceSensor.h" />
+    <ClInclude Include="Down.h" />
+    <ClInclude Include="Left.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="OneLineRoad.h" />
     <ClInclude Include="Race.h" />
+    <ClInclude Include="Right.h" />
+    <ClInclude Include="Road.h" />
+    <ClInclude Include="Sensor.h" />
+    <ClInclude Include="SpeedSensor.h" />
+    <ClInclude Include="TimeSensor.h" />
+    <ClInclude Include="TwoLineRoad.h" />
+    <ClInclude Include="Up.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

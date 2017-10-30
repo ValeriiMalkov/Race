@@ -2,7 +2,6 @@
 Auto::Auto() :X_(10), Y_(24),size_(3),speed_(100),
 control_(nullptr),maxSpeed_(400)
 {
-
 	while (true)
 	{
 		try
@@ -108,12 +107,12 @@ void Auto::goToRoad(const Asphalt & asphalt)
 }
 void Auto::boardViewer()
 {
-	board_->applyParameter();
+	board_->applyParameter(speed_);
 	board_->viewParameter();
 }
 void Auto::boardOn()
 {
-	board_ = new Dashboard(*this);
+	board_ = new Dashboard();
 }
 void Auto::newState(const Asphalt & asphalt)
 {
@@ -167,7 +166,7 @@ void Auto::carControler(const Asphalt & asphalt)
 		{
 			newState(asphalt);
 			control_ = new Left();
-			control_->changeState(*this);
+			control_->changeState(X_);
 		}
 		else return;
 	}
@@ -177,7 +176,7 @@ void Auto::carControler(const Asphalt & asphalt)
 		{
 			newState(asphalt);
 			control_ = new Right();
-			control_->changeState(*this);
+			control_->changeState(X_);
 		}
 		if((X_ +size_)== asphalt.getSize()) return;
 		else return;
@@ -185,12 +184,16 @@ void Auto::carControler(const Asphalt & asphalt)
 	if (GetAsyncKeyState(VK_UP))
 	{
 		control_ = new Up();
-		control_->changeState(*this);
+		if(speed_<=maxSpeed_)
+		control_->changeState(speed_);
+		else return;
 	}
 	if (GetAsyncKeyState(VK_DOWN))
 	{
 		control_ = new Down();
-		control_->changeState(*this);
+		if(speed_>10)
+		control_->changeState(speed_);
+		else return;
 	}
 	else return;
 	
