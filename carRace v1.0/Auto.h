@@ -19,7 +19,7 @@ public:
 	void goToRoad(const Asphalt & asphalt);
 	int getX()const;
 	int getY()const;
-	int getX();
+	 int getX();
 	int getY();
 	int getSpeed()const;
 	int getSpeed();

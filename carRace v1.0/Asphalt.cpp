@@ -7,7 +7,7 @@ Asphalt::~Asphalt()
 	for (int i = 0;i < size_;i++)
 		delete[] map_[i];
 }
-char** Asphalt::getMap()
+ char** Asphalt::getMap()
 {
 	return map_;
 }
