@@ -6,8 +6,8 @@ Barrier::Barrier(const Barrier& barrier)
 	this->barrier_ = barrier.barrier_;
 	this->object_ = barrier.object_;
 	this->size_ = barrier.size_;
-	this->X_ = barrier.X_;
-	this->Y_ = barrier.Y_;
+	this->x_ = barrier.x_;
+	this->y_ = barrier.y_;
 }
 Barrier& Barrier::operator=(const Barrier& barrier)
 {
@@ -17,17 +17,17 @@ Barrier& Barrier::operator=(const Barrier& barrier)
 		this->barrier_ = barrier.barrier_;
 		this->object_ = barrier.object_;
 		this->size_ = barrier.size_;
-		this->X_ = barrier.X_;
-		this->Y_ = barrier.Y_;
+		this->x_ = barrier.x_;
+		this->y_ = barrier.y_;
 		return *this;
 	}
 	else return *this;
 }
 Barrier::Barrier(Road & road) :size_(2),
-object_(static_cast<char>(219)), Y_(0)
+object_(static_cast<char>(219)), y_(0)
 {
 	road_ = &road;
-	X_ = rand() % 23 + 1;
+	x_ = rand() % 23 + 1;
 	while (true)
 	{
 		try
@@ -70,12 +70,12 @@ void Barrier::barrierCleaner()
 			barrier_[i][j] = ' ';
 		}
 	}
-	road_->setObject(X_, Y_, barrier_, size_);
+	road_->setObject(x_, y_, barrier_, size_);
 }
 void Barrier::goToRoad()
 {
 	barrierInitializer();
-	road_->setObject(X_, Y_, barrier_, size_);
+	road_->setObject(x_, y_, barrier_, size_);
 }
 void Barrier::view()
 {
@@ -90,16 +90,12 @@ void Barrier::view()
 }
 bool Barrier::newPosition()
 {
-	if ((Y_ + 2) >= road_->getSize())return false;
+	if ((y_ + 2) >= road_->getSize())return false;
 	else
 	{
 		barrierCleaner();
-		Y_++;
+		y_++;
 		goToRoad();
 		return true;
 	}
-}
-char Barrier::getObject()
-{
-	return object_;
 }

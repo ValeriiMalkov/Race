@@ -13,17 +13,21 @@ public:
 	void goToRoad();
 	void view();
 	bool newPosition();
-	char getObject();
+	inline char getObject();
 private:
 	char ** barrier_;
 	char object_;
 	int size_;
-	int X_;
-	int Y_;
+	int x_;
+	int y_;
 	Road *road_;
 private:
 	Barrier();
 	void barrierInitializer();
 	void barrierCleaner();
 };
+inline char Barrier::getObject()
+{
+	return object_;
+}
 #endif;

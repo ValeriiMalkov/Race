@@ -8,7 +8,7 @@ public:
 	Decor(Road * road);
 	~Decor();
 	void add();
-	void setObject(int X, int Y, char** obj, int sizeObj)const;
+	inline void setObject(int X, int Y, char** obj, int sizeObj)const;
 	void viewer();
 protected:
 	Road* road_;
@@ -19,4 +19,15 @@ private:
 
 
 };
+inline void Decor::setObject(int X, int Y, char ** obj, int sizeObj)const
+{
+	for (int i = 0; i < sizeObj; i++)
+	{
+		for (int j = 0; j < sizeObj; j++)
+		{
+			map_[Y + i][X + j] = obj[i][j];
+		}
+	}
+	road_->setObject(X, Y, obj, sizeObj);
+}
 #endif;

@@ -18,15 +18,15 @@ public:
 	Auto& operator=(const Auto& car);
 	Auto(const Auto & car);
 	void goToRoad(const Road & road);
-	int getX()const;
-	int getY()const;
-	int getX();
-	int getY();
-	int getSpeed()const;
-	int getSpeed();
-	void changeX(int X);
-	void changeY(int Y);
-	void changeSpeed(int speed);
+	inline int getX()const;
+	inline int getY()const;
+	inline int getX();
+	inline int getY();
+	inline int getSpeed()const;
+	inline int getSpeed();
+	inline void changeX(int X);
+	inline void changeY(int Y);
+	inline void changeSpeed(int speed);
 	void carControler(const Road & Road);
 	void view();
 	void boardViewer();
@@ -46,4 +46,28 @@ private:
 	void newState(const Road & Road);
 
 };
+inline int Auto::getX()
+{
+	return X_;
+}
+inline int Auto::getY()
+{
+	return Y_;
+}
+inline int Auto::getX()const
+{
+	return X_;
+}
+inline int Auto::getY()const
+{
+	return Y_;
+}
+inline int Auto::getSpeed()
+{
+	return speed_;
+}
+inline int Auto::getSpeed()const
+{
+	return speed_;
+}
 #endif;

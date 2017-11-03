@@ -134,30 +134,6 @@ void Auto::changeSpeed(int speed)
 	else
 		speed_ += speed;
 }
-int Auto::getX()
-{
-	return X_;
-}
-int Auto::getY()
-{
-	return Y_;
-}
-int Auto::getX()const
-{
-	return X_;
-}
-int Auto::getY()const
-{
-	return Y_;
-}
-int Auto::getSpeed()
-{
-	return speed_;
-}
-int Auto::getSpeed()const
-{
-	return speed_;
-}
 void Auto::carControler(const Road & road)
 {
 	if (GetAsyncKeyState(VK_LEFT))
