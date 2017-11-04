@@ -8,18 +8,17 @@ public:
 	Autobahn();
 	~Autobahn();
 	void add();
-	inline void setObject(int x, int y, char** obj, int sizeObj) const;
+	inline void setObject(int x, int y, Object& object) const;
 	void viewer();
 private:
-	void mapInitializer();
 };
-inline void Autobahn::setObject(int x, int y, char ** obj, int sizeObj)const
+inline void Autobahn::setObject(int x, int y, Object& object)const
 {
-	for (int i = 0; i < sizeObj; i++)
+	for (int i = 0; i < object.getSize(); i++)
 	{
-		for (int j = 0; j < sizeObj; j++)
+		for (int j = 0; j < object.getSize(); j++)
 		{
-			map_[y + i][x + j] = obj[i][j];
+			(*map_)(i + y, j + x) = object(i, j);
 		}
 	}
 }

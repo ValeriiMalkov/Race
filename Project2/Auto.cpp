@@ -1,30 +1,16 @@
 #include "Auto.h"
-Auto::Auto() :X_(10), Y_(24), size_(3), speed_(100),
+Auto::Auto() :x_(10), y_(24), size_(3), speed_(100),
 control_(nullptr), maxSpeed_(400)
 {
-	while (true)
-	{
-		try
-		{
-			car_ = new char*[size_];
-			for (int i = 0; i < size_; i++)
-				car_[i] = new char[size_];
-			//carInitializer();
-			return;
-		}
-		catch (bad_alloc)
-		{
-		}
-	}
-
+	car_ = shared_ptr<Object>(new Object(size_));
 }
 Auto& Auto::operator=(const Auto& car)
 {
 	if (this != &car)
 	{
 		this->car_ = car.car_;
-		this->X_ = car.X_;
-		this->Y_ = car.Y_;
+		this->x_ = car.x_;
+		this->y_ = car.y_;
 		this->size_ = car.size_;
 		this->board_ = car.board_;
 		this->control_ = car.control_;
@@ -37,8 +23,8 @@ Auto& Auto::operator=(const Auto& car)
 Auto::Auto(const Auto & car)
 {
 	this->car_ = car.car_;
-	this->X_ = car.X_;
-	this->Y_ = car.Y_;
+	this->x_ = car.x_;
+	this->y_ = car.y_;
 	this->size_ = car.size_;
 	this->board_ = car.board_;
 	this->control_ = car.control_;
@@ -47,10 +33,9 @@ Auto::Auto(const Auto & car)
 }
 Auto::~Auto()
 {
-	for (int i = 0; i < size_; i++)
-		delete[] car_[i];
-	delete control_;
-	delete board_;
+	car_.~shared_ptr();
+	control_.~shared_ptr();
+	board_.~shared_ptr();
 }
 void Auto::carInitializer()
 {
@@ -61,20 +46,20 @@ void Auto::carInitializer()
 			if (i == 0)
 			{
 				if (j == 0 || j == 2)
-					car_[i][j] = 'O';
-				else car_[i][j] = ' ';
+					(*car_)(i,j) = 'O';
+				else (*car_)(i,j) = ' ';
 			}
 			if (i == 1)
 			{
 				if (j == 0 || j == 2)
-					car_[i][j] = '|';
-				else car_[i][j] = 'X';
+					(*car_)(i, j) = '|';
+				else (*car_)(i, j) = 'X';
 			}
 			if (i == 2)
 			{
 				if (j == 0 || j == 2)
-					car_[i][j] = 'O';
-				else car_[i][j] = ' ';
+					(*car_)(i, j) = 'O';
+				else (*car_)(i, j) = ' ';
 			}
 		}
 	}
@@ -85,7 +70,7 @@ void Auto::carCleaner()
 	{
 		for (int j = 0; j < size_; ++j)
 		{
-			car_[i][j] = ' ';
+			(*car_)(i, j) = ' ';
 		}
 	}
 }
@@ -95,7 +80,7 @@ void Auto::view()
 	{
 		for (int j = 0; j < size_; ++j)
 		{
-			cout << car_[i][j];
+			cout << (*car_)(i,j);
 		}
 		cout << "\n";
 	}
@@ -103,7 +88,7 @@ void Auto::view()
 void Auto::goToRoad(const Road & road)
 {
 	carInitializer();
-	road.setObject(X_, Y_, car_, size_);
+	road.setObject(x_, y_, *car_);
 }
 void Auto::boardViewer()
 {
@@ -112,20 +97,20 @@ void Auto::boardViewer()
 }
 void Auto::boardOn()
 {
-	board_ = new Dashboard();
+	board_ = shared_ptr<Dashboard>(new Dashboard());
 }
 void Auto::newState(const Road & road)
 {
 	carCleaner();
-	road.setObject(X_, Y_, car_, size_);
+	road.setObject(x_, y_, *car_);
 }
-void Auto::changeX(int X)
+void Auto::changeX(int x)
 {
-	X_ += X;
+	x_ += x;
 }
-void Auto::changeY(int Y)
+void Auto::changeY(int y)
 {
-	Y_ += Y;
+	y_ += y;
 }
 void Auto::changeSpeed(int speed)
 {
@@ -138,35 +123,35 @@ void Auto::carControler(const Road & road)
 {
 	if (GetAsyncKeyState(VK_LEFT))
 	{
-		if ((X_ - 3 + 1) >= 1)
+		if ((x_ - 3 + 1) >= 1)
 		{
 			newState(road);
-			control_ = new Left();
-			control_->changeState(X_);
+			control_ =shared_ptr<Control>( new Left());
+			control_->changeState(x_);
 		}
 		else return;
 	}
 	if (GetAsyncKeyState(VK_RIGHT))
 	{
-		if ((X_ + size_) < road.getSize() - 2)
+		if ((x_ + size_) < road.getSize() - 2)
 		{
 			newState(road);
-			control_ = new Right();
-			control_->changeState(X_);
+			control_ = shared_ptr<Control>(new Right());
+			control_->changeState(x_);
 		}
-		if ((X_ + size_) == road.getSize()) return;
+		if ((x_ + size_) == road.getSize()) return;
 		else return;
 	}
 	if (GetAsyncKeyState(VK_UP))
 	{
-		control_ = new Up();
+		control_ = shared_ptr<Control>( new Up());
 		if (speed_ <= maxSpeed_)
 			control_->changeState(speed_);
 		else return;
 	}
 	if (GetAsyncKeyState(VK_DOWN))
 	{
-		control_ = new Down();
+		control_ = shared_ptr<Control>( new Down());
 		if (speed_>10)
 			control_->changeState(speed_);
 		else return;

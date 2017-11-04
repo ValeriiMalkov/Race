@@ -1,8 +1,9 @@
 #include "Race.h"
 Race::Race() :status_(true)
 {
-	road_ = new Line(new Line(new Autobahn, 15), 5);
-	barrier_ = new Barrier(*road_);
+	road_ = shared_ptr<Road>(new Line(shared_ptr<Road>
+		(new Line(shared_ptr<Road>(new Autobahn), 5)), 18));
+	barrier_ = shared_ptr<Barrier>(new Barrier(*road_));
 	car_.boardOn();
 }
 Race::Race(const Race& race)
@@ -26,8 +27,8 @@ Race& Race::operator=(const Race& race)
 }
 Race::~Race()
 {
-	delete road_;
-	delete barrier_;
+	 road_.~shared_ptr();
+	barrier_.~shared_ptr();
 	car_.~Auto();
 }
 void Race::Start()
@@ -39,17 +40,19 @@ void Race::Start()
 		road_->viewer();
 		car_.boardViewer();
 		car_.carControler(*road_);
-		if (road_->getMap()[car_.getY()][car_.getX()] == barrier_->getObject() ||
-			road_->getMap()[car_.getY()][car_.getX() + 1] == barrier_->getObject() ||
-			road_->getMap()[car_.getY()][car_.getX() + 2] == barrier_->getObject())
+		if ((*road_->getMap())(car_.getY(),car_.getX()) == barrier_->getObject() ||
+			(*road_->getMap())(car_.getY(),car_.getX() + 1) == barrier_->getObject() ||
+			(*road_->getMap())(car_.getY(),car_.getX() + 2) == barrier_->getObject())
 		{
 			status_ = false;
 		}
 		if (!barrier_->newPosition())
 		{
-			barrier_->~Barrier();
-			road_ = new Line(new Line(new Autobahn, 15), 5);
-			barrier_ = new Barrier(*road_);
+			barrier_.~shared_ptr();
+			road_ = shared_ptr<Road>(new Line(shared_ptr<Road>
+				(new Line(shared_ptr<Road>(new Autobahn), 5)), 18));
+			
+			barrier_ =shared_ptr<Barrier>( new Barrier(*road_));
 		}
 
 		Sleep(1 / static_cast<double>(car_.getSpeed()) * 1000);

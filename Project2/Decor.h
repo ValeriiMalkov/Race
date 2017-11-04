@@ -5,29 +5,23 @@ class Decor : public Road
 {
 public:
 	Decor();
-	Decor(Road * road);
+	Decor(shared_ptr<Road>& road);
 	~Decor();
 	void add();
-	inline void setObject(int X, int Y, char** obj, int sizeObj)const;
+	inline void setObject(int X, int Y, Object& object)const;
 	void viewer();
 protected:
-	Road* road_;
-private:
-
-	/*Decor(const Road& road);
-	void operator=(const Road& road);*/
-
-
+	shared_ptr<Road> road_;
 };
-inline void Decor::setObject(int X, int Y, char ** obj, int sizeObj)const
+inline void Decor::setObject(int X, int Y, Object& object)const
 {
-	for (int i = 0; i < sizeObj; i++)
+	for (int i = 0; i < object.getSize(); i++)
 	{
-		for (int j = 0; j < sizeObj; j++)
+		for (int j = 0; j < object.getSize(); j++)
 		{
-			map_[Y + i][X + j] = obj[i][j];
+			(*map_)(Y + i, X + j) = object(i, j);
 		}
 	}
-	road_->setObject(X, Y, obj, sizeObj);
+	road_->setObject(X, Y, object);
 }
 #endif;

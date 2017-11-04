@@ -1,7 +1,6 @@
 #include <Windows.h>
 #include<ctime>
 #include"Dashboard.h"
-//#include"Decorator\Autobahn.h"
 #include"Line.h"
 #include"Control.h"
 #include"Left.h"
@@ -32,14 +31,14 @@ public:
 	void boardViewer();
 	void boardOn();
 private:
-	int X_;
-	int Y_;
+	int x_;
+	int y_;
 	int size_;
-	char ** car_;
 	int speed_;
 	int maxSpeed_;
-	Control * control_;
-	Dashboard * board_;
+	shared_ptr<Object> car_;
+	shared_ptr<Control> control_;
+	shared_ptr<Dashboard> board_;
 private:
 	void carInitializer();
 	void carCleaner();
@@ -48,19 +47,19 @@ private:
 };
 inline int Auto::getX()
 {
-	return X_;
+	return x_;
 }
 inline int Auto::getY()
 {
-	return Y_;
+	return y_;
 }
 inline int Auto::getX()const
 {
-	return X_;
+	return x_;
 }
 inline int Auto::getY()const
 {
-	return Y_;
+	return y_;
 }
 inline int Auto::getSpeed()
 {

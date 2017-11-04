@@ -1,8 +1,9 @@
 #include"Decor.h"
-Decor::Decor(Road* road) :Road()
+Decor::Decor(shared_ptr<Road>& road) :Road()
 {
 	road_ = road;
-	map_ = road_->getMap();
+	map_ = road->getMap();
+	//map_-> = road_->getMap();
 }
 Decor::Decor() {}
 //Road::Road(const Road& road) {}

@@ -1,7 +1,5 @@
 #include "Auto.h"
 #include "Barrier.h"
-//#include "Decorator\Autobahn.h"
-//#include "Decorator\Line.h"
 #ifndef RACE_H
 #define RACE_H
 class Race
@@ -13,8 +11,8 @@ public:
 	~Race();
 	void Start();
 private:
-	Road * road_;
-	Barrier * barrier_;
+	shared_ptr<Road> road_;
+	shared_ptr<Barrier> barrier_;
 	Auto car_;
 	bool status_;
 private:

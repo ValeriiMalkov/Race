@@ -1,11 +1,14 @@
 #include"Road.h"
-Road::Road() :size_(27) {}
+Road::Road() :size_(27)
+{ 
+	map_ = shared_ptr<Object>(new Object(size_));
+}
 Road::~Road()
 {
-	for (int i = 0; i < size_; i++)
-		delete[] map_[i];
+
+	map_.~shared_ptr();
 }
-char** Road::getMap()
+shared_ptr<Object>& Road::getMap()
 {
 	return map_;
 }
