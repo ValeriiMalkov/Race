@@ -26,7 +26,7 @@ public:
 	inline void changeX(int X);
 	inline void changeY(int Y);
 	inline void changeSpeed(int speed);
-	void carControler(const Road & Road);
+	void carControler(const Road & road);
 	void view();
 	void boardViewer();
 	void boardOn();
