@@ -1,4 +1,8 @@
 #include "Race.h"
+#ifdef __linux__
+#include <unistd.h>
+#endif
+
 Race::Race() :status_(true)
 {
 	road_ = new Line(new Line(new Autobahn, 15), 5);
@@ -52,7 +56,12 @@ void Race::Start()
 			barrier_ = new Barrier(*road_);
 		}
 
+		#ifdef _WIN32
 		Sleep(1 / static_cast<double>(car_.getSpeed()) * 1000);
+		#elif __linux__
+		sleep(1 / static_cast<double>(car_.getSpeed()) * 1000);
+		#endif
+
 		system("cls");
 	}
 	gameOver();

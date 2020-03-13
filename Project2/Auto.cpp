@@ -158,6 +158,7 @@ int Auto::getSpeed()const
 {
 	return speed_;
 }
+#ifdef _WIN32
 void Auto::carControler(const Road & road)
 {
 	if (GetAsyncKeyState(VK_LEFT))
@@ -199,3 +200,13 @@ void Auto::carControler(const Road & road)
 
 
 }
+
+#elif __linux__
+
+void Auto::carControler(const Road & road)
+{
+	auto c = getchar();
+	std::cout << c << std::endl;
+}
+
+#endif
